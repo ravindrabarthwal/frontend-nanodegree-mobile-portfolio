@@ -560,7 +560,7 @@ function updatePositions() {
   //taking out all other params outside of loop for
   //efficiency
   var
-  scrollTop = document.body.scrollTop / 1250,
+  scrollTop = document.body.scrollTop,
   phase = [],
   itemsLength = items.length;
 
