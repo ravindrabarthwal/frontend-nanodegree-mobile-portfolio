@@ -483,9 +483,12 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
+    //taking variables outside the loops.
     var
     randomPizzaContainer = document.getElementsByClassName("randomPizzaContainer") ,
-    newWidth;
+    newWidth,
+    randomPizzaContainerLength = randomPizzaContainer.length;
+    //A simple switch loop that give width % as slider move. Thanks Cam
     switch(size) {
       case "1":
         newWidth = 25; break;
@@ -497,7 +500,7 @@ var resizePizzas = function(size) {
         console.log("Bug! in size selector");
     }
 
-    for (var i = 0; i < randomPizzaContainer.length; i++) {
+    for (var i = 0; i < randomPizzaContainerLength; i++) {
       randomPizzaContainer[i].style.width = newWidth + "%";
     }
   }
@@ -515,6 +518,10 @@ window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
 var pizzasDiv = document.getElementById("randomPizzas");
+
+//create a fragment that will hold all other child
+//fragments and then we can append the whole frag
+//at once
 var frag = document.createDocumentFragment();
 for (var i = 2; i < 100; i++) {
   frag.appendChild(pizzaElementGenerator(i));
@@ -550,14 +557,16 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
+  //taking out all other params outside of loop for
+  //efficiency
   var
   scrollTop = document.body.scrollTop / 1250,
   phase,
-  element;
-  for (var i = 0; i < items.length; i++) {
-    element = items[i];
+  itemsLength = items.length;
+
+  for (var i = 0; i < itemsLength; i++) {
     phase = Math.sin((scrollTop) + (i % 5));
-    element.style.left = element.basicLeft + 100 * phase + 'px';
+    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -577,16 +586,23 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
+  //Becoming more specific with selector
   var movingPizzas1 = document.getElementById("movingPizzas1");
+  //create a fragment which hold all the created dom
+  //nodes which we can append to document
   var frag = document.createDocumentFragment();
   var elem;
   for (var i = 0; i < 21; i++) {
+    //Append each element to fragment
     elem = frag.appendChild(document.createElement('img'));
     elem.className = 'mover';
     elem.src = "images/pizza-small.png";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
   }
+  //Append the fragment to the movingPizzas1 this
+  //helps to only change layout once
   movingPizzas1.appendChild(frag);
+  //call for requestAnimationFrame for updatePositions
   requestAnimationFrame(updatePositions);
 });
