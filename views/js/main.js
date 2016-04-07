@@ -597,8 +597,13 @@ document.addEventListener('DOMContentLoaded', function() {
   //create a fragment which hold all the created dom
   //nodes which we can append to document
   var frag = document.createDocumentFragment();
-  var elem;
-  for (var i = 0; i < 24; i++) {
+  var
+  elem,
+  height = window.innerHeight,
+  rows = height / s,
+  reqPizzas = rows * cols;
+
+  for (var i = 0; i < reqPizzas; i++) {
     //Append each element to fragment
     elem = frag.appendChild(document.createElement('img'));
     elem.className = 'mover';
