@@ -561,12 +561,18 @@ function updatePositions() {
   //efficiency
   var
   scrollTop = document.body.scrollTop / 1250,
-  phase,
+  phase = [],
   itemsLength = items.length;
 
+  //Since the phase use i%5 and this always yields a value of
+  //0 to 4 so its waste of resource to execute this in loop,
+  //This loop puts all the value that phase can have in phase array
+  for (var i = 0; i < 5; i++) {
+      phase.push(Math.sin(scrollTop / 1250 + i) * 100);
+  }
+
   for (var i = 0; i < itemsLength; i++) {
-    phase = Math.sin((scrollTop) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.left = items[i].basicLeft + phase[i%5] + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -592,7 +598,7 @@ document.addEventListener('DOMContentLoaded', function() {
   //nodes which we can append to document
   var frag = document.createDocumentFragment();
   var elem;
-  for (var i = 0; i < 21; i++) {
+  for (var i = 0; i < 24; i++) {
     //Append each element to fragment
     elem = frag.appendChild(document.createElement('img'));
     elem.className = 'mover';
